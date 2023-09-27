@@ -1,6 +1,7 @@
 """
 """
 import logging
+import sys
 import unittest
 from contextlib import contextmanager
 from typing import Dict
@@ -24,11 +25,25 @@ def capture_logs(level=logging.INFO, format="{extra}"):
 
 class TestLog(unittest.TestCase):
 
+    def test_basic_usage(self):
+        logger_id = logger.add(
+            sys.stdout,
+            serialize=True,
+            format="[{time:YYYY-MM-DD HH:mm:ss}] {level} {message}")
+
+        @fn_record(logger=logger)
+        def add(a, b):
+            return a + b
+
+        _ = add(1, 2)
+
+        logger.remove(logger_id)
+
     def test_extra_record(self):
 
         with capture_logs() as caplog:  # capture loguru log, and assert it
 
-            @fn_record(logger=logger, level=logging.INFO)
+            @fn_record(logger=logger)
             def add(a, b):
                 return a + b
 
