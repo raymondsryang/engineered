@@ -2,7 +2,6 @@
 Logging utilities
 """
 import functools
-import logging
 import traceback
 from typing import Any, Callable, Iterable, Mapping, Optional, Union
 
